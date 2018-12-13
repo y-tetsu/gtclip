@@ -11,6 +11,7 @@ import pyperclip
 MAX_BYTES = 80
 DELIMITER = [u'。', u'、']
 
+
 def copy_clip():
     """
     クリップボードの改行を削除
@@ -55,9 +56,9 @@ def paste_clip():
 
 
 if __name__ == '__main__':
-    args = sys.argv
+    ARGS = sys.argv
 
-    if args[1] == 'copy':
+    if ARGS[1] == 'copy':
         copy_clip()
-    elif args[1] == 'paste':
+    elif ARGS[1] == 'paste':
         paste_clip()
