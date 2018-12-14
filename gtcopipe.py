@@ -18,6 +18,9 @@ def main():
     """
     args = sys.argv
 
+    if len(args) != 2:
+        usage()
+
     if args[1] == 'copy':
         clip_text = pyperclip.paste()
         mod_text = remove_return_code(clip_text)
@@ -27,6 +30,17 @@ def main():
         clip_text = pyperclip.paste()
         mod_text = fix_line_length(clip_text, MAX_BYTES, DELIMITER)
         pyperclip.copy(mod_text)
+
+    else:
+        usage()
+
+
+def usage():
+    """
+    使用方法
+    """
+    print("Usage : python gtcopipe.py [copy|paste]")
+    sys.exit(1)
 
 
 def remove_return_code(text):
