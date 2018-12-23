@@ -25,7 +25,7 @@ def main():
         usage()
 
     if args[1] == 'ja':
-        # クリップボードに記憶
+        # クリップボードを翻訳
         clip_text = pyperclip.paste()
         mod_text = remove_return_code(clip_text)
 
@@ -46,6 +46,7 @@ def main():
         gtcopipe_window(args[0], 'English', clip_text, 'Japanese', result_text)
 
     elif args[1] == 'en':
+        # クリップボードを翻訳
         clip_text = pyperclip.paste()
 
         print("<<<", clip_text)
