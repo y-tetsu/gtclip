@@ -70,7 +70,7 @@ def usage():
     """
     使用方法
     """
-    print("Usage : python gtcopipe.py [copy|paste]")
+    print("Usage : python gtcopipe.py [ja|en]")
     sys.exit(1)
 
 
