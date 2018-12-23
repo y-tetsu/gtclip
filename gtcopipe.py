@@ -43,7 +43,7 @@ def main():
         pyperclip.copy(result_text)
 
         # GUI表示
-        gtcopipe_window(sys.argv[0], 'English', clip_text, 'Japanese', result_text)
+        gtcopipe_window(args[0], 'English', clip_text, 'Japanese', result_text)
 
     elif args[1] == 'en':
         clip_text = pyperclip.paste()
@@ -60,7 +60,7 @@ def main():
         pyperclip.copy(result_text)
 
         # GUI表示
-        gtcopipe_window(sys.argv[0], 'Japanese', clip_text, 'English', result_text)
+        gtcopipe_window(args[0], 'Japanese', clip_text, 'English', result_text)
 
     else:
         usage()
