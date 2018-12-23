@@ -10,6 +10,7 @@ import gtcopipe
 
 class TestGtCopiPe(unittest.TestCase):
     "gtcopipe test"
+    delimiter = [u'句点', u'読点', u'並立助詞', u'格助詞', u'係助詞']
 
     def setUp(self):
         pass
@@ -30,7 +31,7 @@ class TestGtCopiPe(unittest.TestCase):
         訳文を整える
         """
         text = "おはよう、こんにちは、こんばんは。"
-        result = gtcopipe.fix_line_length(text, 3, [u'。', u'、'])
+        result = gtcopipe.fix_line_length(text, 3, self.delimiter)
         self.assertEqual(result, "おはよう、\r\nこんにちは、\r\nこんばんは。\r\n")
 
     def test_fix_line_length2(self):
@@ -38,7 +39,7 @@ class TestGtCopiPe(unittest.TestCase):
         訳文を整える
         """
         text = "おはよう、こんにちは、こんばんは。"
-        result = gtcopipe.fix_line_length(text, 20, [u'。', u'、'])
+        result = gtcopipe.fix_line_length(text, 20, self.delimiter)
         self.assertEqual(result, "おはよう、こんにちは、\r\nこんばんは。")
 
     def test_fix_line_length3(self):
@@ -46,7 +47,7 @@ class TestGtCopiPe(unittest.TestCase):
         訳文を整える
         """
         text = "おはよう、こんにちは、こんばんは。"
-        result = gtcopipe.fix_line_length(text, 80, [u'。', u'、'])
+        result = gtcopipe.fix_line_length(text, 80, self.delimiter)
         self.assertEqual(result, "おはよう、こんにちは、こんばんは。")
 
 
