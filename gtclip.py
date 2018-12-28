@@ -29,11 +29,7 @@ def main():
     # テキストの翻訳言語を決める
     translator = Translator()
     detect = translator.detect(clip_text)
-
-    if detect.lang == 'ja':
-        lang = 'en'
-    else:
-        lang = 'ja'
+    translate_lang = 'en' if detect.lang == 'ja' else 'ja'
 
     # 改行を削除
     mod_text = remove_return_code(clip_text)
@@ -42,14 +38,14 @@ def main():
     print("<<<", mod_text)
 
     try:
-        translated_text = translator.translate(mod_text, dest=lang).text
+        translated_text = translator.translate(mod_text, dest=translate_lang).text
     except:
         translated_text = '*** 翻訳できませんでした。 ***'
 
     # 訳文を整える
     result_text = u''
 
-    if lang == 'ja':
+    if translate_lang == 'ja':
         result_text = fix_line_length_ja(translated_text, MAX_BYTES, DELIMITER_JA)
     else:
         result_text = fix_line_length_en(translated_text, MAX_BYTES, DELIMITER_EN)
