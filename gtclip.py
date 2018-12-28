@@ -117,8 +117,8 @@ def fix_line_length_ja(text, max_bytes, delimiter):
     和訳文を整える
     """
     tokenizer = Tokenizer()
-
     mod_text = u''
+
     if text:
         length = 0
 
