@@ -19,59 +19,52 @@ def main():
     """
     クリップボードのテキスト操作
     """
-    args = sys.argv
-
-    if len(args) != 2:
+    if len(sys.argv) != 1:
         usage()
 
-    if args[1] == 'ja':
-        # クリップボードを翻訳
-        clip_text = pyperclip.paste()
-        mod_text = remove_return_code(clip_text)
+    # テキストを取得
+    clip_text = pyperclip.paste()
 
-        print("<<<", mod_text)
+    # テキストの翻訳言語を決める
+    translator = Translator()
+    detect = translator.detect(clip_text)
 
-        try:
-            translated_text = Translator().translate(mod_text, dest='ja').text
-        except:
-            translated_text = '*** 翻訳できませんでした。 ***'
-
-        result_text = fix_line_length(translated_text, MAX_BYTES, DELIMITER)
-
-        print(">>>", result_text)
-
-        pyperclip.copy(result_text)
-
-        # GUI表示
-        gtclip_window(args[0], 'English', clip_text, 'Japanese', result_text)
-
-    elif args[1] == 'en':
-        # クリップボードを翻訳
-        clip_text = pyperclip.paste()
-
-        print("<<<", clip_text)
-
-        try:
-            result_text = Translator().translate(clip_text, dest='en').text
-        except:
-            result_text = '*** 翻訳できませんでした。 ***'
-
-        print(">>>", result_text)
-
-        pyperclip.copy(result_text)
-
-        # GUI表示
-        gtclip_window(args[0], 'Japanese', clip_text, 'English', result_text)
-
+    if detect.lang == 'ja':
+        lang = 'en'
     else:
-        usage()
+        lang = 'ja'
+
+    # 改行を削除
+    mod_text = remove_return_code(clip_text)
+
+    # 翻訳する
+    print("<<<", mod_text)
+
+    try:
+        translated_text = translator.translate(mod_text, dest=lang).text
+    except:
+        translated_text = '*** 翻訳できませんでした。 ***'
+
+    # 訳文を整える
+    result_text = translated_text
+
+    if lang == 'ja':
+        result_text = fix_line_length(result_text, MAX_BYTES, DELIMITER)
+
+    print(">>>", result_text)
+
+    # クリップボードのテキストを置き換える
+    pyperclip.copy(result_text)
+
+    # GUI表示
+    gtclip_window(sys.argv[0], 'Original', clip_text, 'Translated', result_text)
 
 
 def usage():
     """
     使用方法
     """
-    print("Usage : python gtclip.py [ja|en]")
+    print("Usage : python", sys.argv[0])
     sys.exit(1)
 
 
