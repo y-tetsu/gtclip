@@ -1,4 +1,4 @@
-# gtcopipe
+# gtclip
 Google翻訳結果をクリップボードにコピー
 
 ## Description
