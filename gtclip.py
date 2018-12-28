@@ -28,7 +28,14 @@ def main():
 
     # テキストの翻訳言語を決める
     translator = Translator()
-    detect = translator.detect(clip_text)
+    detect = ""
+
+    try:
+        detect = translator.detect(clip_text)
+    except:
+        print("Error : Connection Error")
+        sys.exit(1)
+
     translate_lang = 'en' if detect.lang == 'ja' else 'ja'
 
     # 改行を削除
@@ -36,11 +43,12 @@ def main():
 
     # 翻訳する
     print("<<<", mod_text)
+    translated_text = u''
 
     try:
         translated_text = translator.translate(mod_text, dest=translate_lang).text
     except:
-        translated_text = '*** 翻訳できませんでした。 ***'
+        translated_text = u'*** 翻訳できませんでした。 ***'
 
     # 訳文を整える
     result_text = u''
