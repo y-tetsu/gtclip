@@ -12,7 +12,7 @@
 vk1D & t::
     Send, ^c
     Sleep, 300
-    RunWait, python gtclip.py, , Hide
+    Run, python gtclip.py, , Hide
 Return
 
 ;=========================================================

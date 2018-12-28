@@ -12,7 +12,8 @@ from googletrans import Translator
 from janome.tokenizer import Tokenizer
 
 MAX_BYTES = 80
-DELIMITER = [u'句点', u'読点', u'並立助詞', u'格助詞', u'係助詞']
+DELIMITER_JA = [u'句点', u'読点', u'並立助詞', u'格助詞', u'係助詞']
+DELIMITER_EN = [u',', u'.', u' ']
 
 
 def main():
@@ -46,10 +47,12 @@ def main():
         translated_text = '*** 翻訳できませんでした。 ***'
 
     # 訳文を整える
-    result_text = translated_text
+    result_text = u''
 
     if lang == 'ja':
-        result_text = fix_line_length(result_text, MAX_BYTES, DELIMITER)
+        result_text = fix_line_length_ja(translated_text, MAX_BYTES, DELIMITER_JA)
+    else:
+        result_text = fix_line_length_en(translated_text, MAX_BYTES, DELIMITER_EN)
 
     print(">>>", result_text)
 
@@ -82,15 +85,16 @@ def remove_return_code(text):
     return mod_text
 
 
-def fix_line_length(text, max_bytes, delimiter):
+def fix_line_length_ja(text, max_bytes, delimiter):
     """
-    訳文を整える
+    和訳文を整える
     """
     tokenizer = Tokenizer()
 
     mod_text = u''
     if text:
         length = 0
+
         for token in tokenizer.tokenize(text):
             char = token.surface
             speech = token.part_of_speech.split(',')[1]
@@ -100,6 +104,33 @@ def fix_line_length(text, max_bytes, delimiter):
             if length > max_bytes and speech in delimiter:
                 length = 0
                 mod_text += '\r\n'
+
+    mod_text = re.sub(r'\r\n$', '', mod_text)
+
+    return mod_text
+
+
+def fix_line_length_en(text, max_bytes, delimiter):
+    """
+    英訳文を整える
+    """
+    text = re.sub(r'\s+', ' ', text)
+    mod_text = u''
+
+    if text:
+        length = 0
+
+        for char in text:
+            length += len(char.encode())
+            mod_text += char
+
+            if length > max_bytes and char in delimiter:
+                length = 0
+                mod_text += '\r\n'
+
+    mod_text = re.sub(r'\s+\r\n', '\r\n', mod_text)
+    mod_text = re.sub(r'\r\n\s+', '\r\n', mod_text)
+    mod_text = re.sub(r'\r\n$', '', mod_text)
 
     return mod_text
 
