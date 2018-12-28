@@ -5,11 +5,11 @@ unittest
 """
 
 import unittest
-import gtcopipe
+import gtclip
 
 
-class TestGtCopiPe(unittest.TestCase):
-    "gtcopipe test"
+class TestGtClip(unittest.TestCase):
+    "gtclip test"
     delimiter = [u'句点', u'読点', u'並立助詞', u'格助詞', u'係助詞']
 
     def setUp(self):
@@ -23,7 +23,7 @@ class TestGtCopiPe(unittest.TestCase):
         改行を削除
         """
         text = "test\r\ntest\rtest\n"
-        result = gtcopipe.remove_return_code(text)
+        result = gtclip.remove_return_code(text)
         self.assertEqual(result, "testtesttest")
 
     def test_fix_line_length1(self):
@@ -31,7 +31,7 @@ class TestGtCopiPe(unittest.TestCase):
         訳文を整える
         """
         text = "おはよう、こんにちは、こんばんは。"
-        result = gtcopipe.fix_line_length(text, 3, self.delimiter)
+        result = gtclip.fix_line_length(text, 3, self.delimiter)
         self.assertEqual(result, "おはよう、\r\nこんにちは、\r\nこんばんは。\r\n")
 
     def test_fix_line_length2(self):
@@ -39,7 +39,7 @@ class TestGtCopiPe(unittest.TestCase):
         訳文を整える
         """
         text = "おはよう、こんにちは、こんばんは。"
-        result = gtcopipe.fix_line_length(text, 20, self.delimiter)
+        result = gtclip.fix_line_length(text, 20, self.delimiter)
         self.assertEqual(result, "おはよう、こんにちは、\r\nこんばんは。")
 
     def test_fix_line_length3(self):
@@ -47,7 +47,7 @@ class TestGtCopiPe(unittest.TestCase):
         訳文を整える
         """
         text = "おはよう、こんにちは、こんばんは。"
-        result = gtcopipe.fix_line_length(text, 80, self.delimiter)
+        result = gtclip.fix_line_length(text, 80, self.delimiter)
         self.assertEqual(result, "おはよう、こんにちは、こんばんは。")
 
 

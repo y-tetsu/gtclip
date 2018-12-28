@@ -12,7 +12,7 @@
 #j::
     Send, ^c
     Sleep, 1000
-    RunWait, python gtcopipe.py ja, , Hide
+    RunWait, python gtclip.py ja, , Hide
     Return
 
 ;---------------------------------------------------
@@ -25,7 +25,7 @@
 #e::
     Send, ^c
     Sleep, 1000
-    RunWait, python gtcopipe.py en, , Hide
+    RunWait, python gtclip.py en, , Hide
     Return
 
 ;=========================================================

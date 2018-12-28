@@ -43,7 +43,7 @@ def main():
         pyperclip.copy(result_text)
 
         # GUI表示
-        gtcopipe_window(args[0], 'English', clip_text, 'Japanese', result_text)
+        gtclip_window(args[0], 'English', clip_text, 'Japanese', result_text)
 
     elif args[1] == 'en':
         # クリップボードを翻訳
@@ -61,7 +61,7 @@ def main():
         pyperclip.copy(result_text)
 
         # GUI表示
-        gtcopipe_window(args[0], 'Japanese', clip_text, 'English', result_text)
+        gtclip_window(args[0], 'Japanese', clip_text, 'English', result_text)
 
     else:
         usage()
@@ -71,7 +71,7 @@ def usage():
     """
     使用方法
     """
-    print("Usage : python gtcopipe.py [ja|en]")
+    print("Usage : python gtclip.py [ja|en]")
     sys.exit(1)
 
 
@@ -111,7 +111,7 @@ def fix_line_length(text, max_bytes, delimiter):
     return mod_text
 
 
-def gtcopipe_window(title, label1, text1, label2, text2):
+def gtclip_window(title, label1, text1, label2, text2):
     """
     GUI表示
     """
