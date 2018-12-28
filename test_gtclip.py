@@ -75,6 +75,22 @@ class TestGtClip(unittest.TestCase):
         result = gtclip.fix_line_length_en(text, 80, self.delimiter_en)
         self.assertEqual(result, "Good morning. Hello. Good afternoon.")
 
+    def test_translate_text1(self):
+        """
+        訳文を整える
+        """
+        text = "Good  morning. Good afternoon."
+        result = gtclip.translate_text(text, 80, self.delimiter_ja, self.delimiter_en)
+        self.assertEqual(result, "おはようございます。こんにちは。")
+
+    def test_translate_text2(self):
+        """
+        訳文を整える
+        """
+        text = "おはようございます。こんにちは。"
+        result = gtclip.translate_text(text, 80, self.delimiter_ja, self.delimiter_en)
+        self.assertEqual(result, "Good morning. Hello.")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Google翻訳結果をクリップボードにコピー
+クリップボードのテキストをGoogle翻訳結果に置き換える
 """
 
 import sys
+import time
 import re
-import tkinter as tk
 import pyperclip
 from googletrans import Translator
 from janome.tokenizer import Tokenizer
@@ -18,31 +18,64 @@ DELIMITER_EN = [u',', u'.', u' ']
 
 def main():
     """
-    クリップボードのテキスト操作
+    クリップボードを翻訳
     """
     if len(sys.argv) != 1:
         usage()
 
-    # テキストを取得
-    clip_text = pyperclip.paste()
+    # クリップボードを監視する
+    clip_text_pre = pyperclip.paste()
+    clip_text = clip_text_pre
 
+    while True:
+        time.sleep(0.05)
+
+        # テキストを取得
+        clip_text = pyperclip.paste()
+
+        if clip_text != clip_text_pre:
+            # テキストを翻訳
+            translated_text = translate_text(clip_text, MAX_BYTES, DELIMITER_JA, DELIMITER_EN)
+
+            # クリップボードのテキストを置き換える
+            pyperclip.copy(translated_text)
+
+            # 前回値を更新
+            clip_text_pre = translated_text
+
+
+def usage():
+    """
+    使用方法
+    """
+    print("Usage : python", sys.argv[0])
+    sys.exit(1)
+
+
+def translate_text(text, max_bytes, delimiter_ja, delimiter_en):
+    """
+    テキストを翻訳
+    """
     # テキストの翻訳言語を決める
     translator = Translator()
     detect = ""
 
     try:
-        detect = translator.detect(clip_text)
+        detect = translator.detect(text)
     except:
         print("Error : Connection Error")
         sys.exit(1)
 
     translate_lang = 'en' if detect.lang == 'ja' else 'ja'
 
+    print("")
+    print("--------------------- [Original] ---------------------")
+    print(text)
+
     # 改行を削除
-    mod_text = remove_return_code(clip_text)
+    mod_text = remove_return_code(text)
 
     # 翻訳する
-    print("<<<", mod_text)
     translated_text = u''
 
     try:
@@ -54,25 +87,15 @@ def main():
     result_text = u''
 
     if translate_lang == 'ja':
-        result_text = fix_line_length_ja(translated_text, MAX_BYTES, DELIMITER_JA)
+        result_text = fix_line_length_ja(translated_text, max_bytes, delimiter_ja)
     else:
-        result_text = fix_line_length_en(translated_text, MAX_BYTES, DELIMITER_EN)
+        result_text = fix_line_length_en(translated_text, max_bytes, delimiter_en)
 
-    print(">>>", result_text)
+    print("")
+    print("-------------------- [Translated] --------------------")
+    print(result_text)
 
-    # クリップボードのテキストを置き換える
-    pyperclip.copy(result_text)
-
-    # GUI表示
-    gtclip_window(sys.argv[0], 'Original', clip_text, 'Translated', result_text)
-
-
-def usage():
-    """
-    使用方法
-    """
-    print("Usage : python", sys.argv[0])
-    sys.exit(1)
+    return result_text
 
 
 def remove_return_code(text):
@@ -139,29 +162,10 @@ def fix_line_length_en(text, max_bytes, delimiter):
     return mod_text
 
 
-def gtclip_window(title, label1, text1, label2, text2):
-    """
-    GUI表示
-    """
-    root = tk.Tk()
-    root.title(title)
-
-    label_wedget1 = tk.Label(root, text=label1)
-    label_wedget1.grid()
-
-    text_wedget1 = tk.Text(root)
-    text_wedget1.grid()
-    text_wedget1.insert('1.0', text1)
-
-    label_wedget2 = tk.Label(root, text=label2)
-    label_wedget2.grid()
-
-    text_wedget2 = tk.Text(root)
-    text_wedget2.grid()
-    text_wedget2.insert('1.0', text2)
-
-    root.mainloop()
-
-
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("")
+        print("* 終了 *")
+        print("")
