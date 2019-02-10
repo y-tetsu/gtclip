@@ -57,7 +57,15 @@ def translate_text(text, max_bytes, delimiter_ja, delimiter_en):
     テキストを翻訳
     """
     # テキストの翻訳言語を決める
+    #------------------------------#   
     translator = Translator()
+    #------------------------------#   
+    #user_name = ''
+    #password = ''
+    #ip = ''
+    #port = ''
+    #translator = Translator(proxies={'http': '{}:{}@{}:{}'.format(user_name, password, ip, port)})
+    #------------------------------#   
     detect = ""
 
     try:
